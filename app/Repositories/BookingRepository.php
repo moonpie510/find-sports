@@ -53,7 +53,8 @@ class BookingRepository
      * Формирует query для bookings.
      */
     private function getBookingQuery(
-        ?int $id = null
+        ?int $id = null,
+        ?int $userId = null
     ): Builder
     {
         $query = Booking::query();
@@ -62,15 +63,29 @@ class BookingRepository
             $query->where('id', $id);
         }
 
+        if ($userId !== null) {
+            $query->where('user_id', $userId);
+        }
+
         return $query;
     }
 
     /**
-     * Получить заказ по id.
+     * Проверка, что пользователю принадлежит бронирование.
      */
-    public function getBookingById(int $id): ?Booking
+    public function checkBookingByUser(User $user, int $bookingId): bool
     {
-        return $this->getBookingQuery(id: $id)->first();
+        return $this->getBookingQuery(id: $bookingId, userId: $user->id)->exists();
+    }
+
+    /**
+     * Получить заказ по id.
+     *
+     * Если передан $userId, то проверяется, что пользователю принадлежит заказ.
+     */
+    public function getBookingById(int $id, ?int $userId = null): ?Booking
+    {
+        return $this->getBookingQuery(id: $id, userId: $userId)->first();
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\BookingSlot;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 

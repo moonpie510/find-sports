@@ -70,7 +70,13 @@ class BookingController extends Controller
                 throw new \Exception('Пользователь не найден по такому токену');
             }
 
-            $slot = $this->bookingRepository->getSlotById($slot, $booking);
+            $booking = $this->bookingRepository->getBookingById($booking, $user->id);
+
+            if (!$booking) {
+                throw new \Exception('Заказ не найден или принадлежит другому пользователю');
+            }
+
+            $slot = $this->bookingRepository->getSlotById($slot, $booking->id);
 
             if (!$slot) {
                 throw new \Exception('Слот не найден');
@@ -93,15 +99,15 @@ class BookingController extends Controller
                 throw new \Exception('Пользователь не найден по такому токену');
             }
 
-            $booking = $this->bookingRepository->getBookingById($booking);
+            $booking = $this->bookingRepository->getBookingById($booking, $user->id);
 
             if (!$booking) {
-                throw new \Exception('Заказ не найден');
+                throw new \Exception('Заказ не найден или принадлежит другому пользователю');
             }
 
             $this->bookingRepository->addSlot($booking, Interval::create($request->start_time, $request->end_time));
 
-            return ApiResponseHelper::success(message: 'Слот успешно обновлен');
+            return ApiResponseHelper::success(message: 'Слот успешно добавлен');
         } catch (\Throwable $th) {
             return ApiResponseHelper::error(message: $th->getMessage());
         }
@@ -116,10 +122,10 @@ class BookingController extends Controller
                 throw new \Exception('Пользователь не найден по такому токену');
             }
 
-            $booking = $this->bookingRepository->getBookingById($booking);
+            $booking = $this->bookingRepository->getBookingById($booking, $user->id);
 
             if (!$booking) {
-                throw new \Exception('Заказ не найден');
+                throw new \Exception('Заказ не найден или принадлежит другому пользователю');
             }
 
             $this->bookingRepository->deleteBooking($booking);

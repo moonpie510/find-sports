@@ -1,0 +1,300 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Booking",
+        "version": "1.0"
+    },
+    "paths": {
+        "/api/v1/bookings": {
+            "get": {
+                "tags": [
+                    "Bookings"
+                ],
+                "summary": "Список бронирований пользователя",
+                "operationId": "9e56a7045aca0355aff4676e93d8f5b9",
+                "parameters": [
+                    {
+                        "name": "User-Token",
+                        "in": "header",
+                        "description": "Токен пользователя для аутентификации",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Список бронирований пользователя",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Запрос прошел успешно"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "slots": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/BookingResource"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "user": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Иванов Иван"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Bookings"
+                ],
+                "summary": "Создать бронирование с несколькими слотами",
+                "operationId": "604cc1b19aa03a664267cde57ff4b1ea",
+                "parameters": [
+                    {
+                        "name": "User-Token",
+                        "in": "header",
+                        "description": "Токен пользователя для аутентификации",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateSlotRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Список бронирований пользователя",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Запрос прошел успешно"
+                                        },
+                                        "data": {
+                                            "default": []
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/bookings/{booking}/slots/{slot}": {
+            "patch": {
+                "tags": [
+                    "Bookings"
+                ],
+                "summary": "Обновить конкретный слот",
+                "operationId": "c9f0b5c59452fb2d614554ade90248b0",
+                "parameters": [
+                    {
+                        "name": "User-Token",
+                        "in": "header",
+                        "description": "Токен пользователя для аутентификации",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "booking",
+                        "in": "path",
+                        "description": "ID бронирования",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "slot",
+                        "in": "path",
+                        "description": "ID слота",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateSlotRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Обновить конкретный слот",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Слот успешно обновлен"
+                                        },
+                                        "data": {
+                                            "default": []
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "AddSlotRequest": {
+                "description": "Запрос на добавление слота"
+            },
+            "CreateSlotRequest": {
+                "description": "Создать бронирование с несколькими слотами",
+                "properties": {
+                    "slots": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "start_time": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "example": "2027-06-25T12:00:00"
+                                },
+                                "end_time": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "example": "2027-06-25T13:00:00"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateSlotRequest": {
+                "description": "Обновить конкретный слот",
+                "properties": {
+                    "start_time": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2027-06-25T12:00:00"
+                    },
+                    "end_time": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2027-06-25T13:00:00"
+                    }
+                },
+                "type": "object"
+            },
+            "BookingResource": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "booking_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "is_finished": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "start_time": {
+                        "type": "string",
+                        "example": "2025-07-03 10:52:00"
+                    },
+                    "end_time": {
+                        "type": "string",
+                        "example": "2025-07-03 12:52:00"
+                    }
+                },
+                "type": "object"
+            },
+            "BookingResourceCollection": {
+                "properties": {
+                    "": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/BookingResource"
+                        }
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Bookings",
+            "description": "Bookings"
+        }
+    ]
+}
