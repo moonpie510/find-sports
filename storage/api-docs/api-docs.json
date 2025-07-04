@@ -1,7 +1,7 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "Booking",
+        "title": "Bookings",
         "version": "1.0"
     },
     "paths": {
@@ -102,7 +102,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Список бронирований пользователя",
+                        "description": "Создать бронирование с несколькими слотами",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -206,15 +206,151 @@
                     }
                 }
             }
+        },
+        "/api/v1/bookings/{booking}/slots": {
+            "post": {
+                "tags": [
+                    "Bookings"
+                ],
+                "summary": "Добавить новый слот к существующему заказу",
+                "operationId": "5036734988a1fe682a950f1025e9c792",
+                "parameters": [
+                    {
+                        "name": "User-Token",
+                        "in": "header",
+                        "description": "Токен пользователя для аутентификации",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "booking",
+                        "in": "path",
+                        "description": "ID бронирования",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AddSlotRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Добавить новый слот к существующему заказу",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Слот успешно добавлен"
+                                        },
+                                        "data": {
+                                            "default": []
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/bookings/{booking}": {
+            "delete": {
+                "tags": [
+                    "Bookings"
+                ],
+                "summary": "Удалить весь заказ",
+                "operationId": "ec2c69cb809fa25245179d3ccf9f2310",
+                "parameters": [
+                    {
+                        "name": "User-Token",
+                        "in": "header",
+                        "description": "Токен пользователя для аутентификации",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "booking",
+                        "in": "path",
+                        "description": "ID бронирования",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Удалить весь заказ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Заказ успешно удален"
+                                        },
+                                        "data": {
+                                            "default": []
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
         "schemas": {
             "AddSlotRequest": {
-                "description": "Запрос на добавление слота"
+                "properties": {
+                    "start_time": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2027-06-25T12:00:00"
+                    },
+                    "end_time": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2027-06-25T13:00:00"
+                    }
+                },
+                "type": "object"
             },
             "CreateSlotRequest": {
-                "description": "Создать бронирование с несколькими слотами",
                 "properties": {
                     "slots": {
                         "type": "array",
@@ -238,7 +374,6 @@
                 "type": "object"
             },
             "UpdateSlotRequest": {
-                "description": "Обновить конкретный слот",
                 "properties": {
                     "start_time": {
                         "type": "string",

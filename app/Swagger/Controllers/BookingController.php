@@ -5,7 +5,7 @@ namespace App\Swagger\Controllers;
 use App\Http\Controllers\Controller;
 use OpenApi\Attributes as OA;
 
-#[OA\Info(version: '1.0', title: 'Booking')]
+#[OA\Info(version: '1.0', title: 'Bookings')]
 class BookingController extends Controller
 {
 
@@ -62,7 +62,7 @@ class BookingController extends Controller
         responses: [
             new OA\Response(
                 response: 200,
-                description: 'Список бронирований пользователя',
+                description: 'Создать бронирование с несколькими слотами',
                 content: [
                     new OA\JsonContent(properties: [
                         new OA\Property(property: 'success', type: 'boolean', example: true),
@@ -116,11 +116,11 @@ class BookingController extends Controller
     {}
 
     #[OA\Post(
-        path: '/api/v1/bookings/{booking}/slots}',
+        path: '/api/v1/bookings/{booking}/slots',
         summary: 'Добавить новый слот к существующему заказу',
         requestBody: new OA\RequestBody(
             content: [
-                new OA\JsonContent(ref: '#/components/schemas/UpdateSlotRequest')
+                new OA\JsonContent(ref: '#/components/schemas/AddSlotRequest')
             ]
         ),
         tags: ['Bookings'],
@@ -133,7 +133,6 @@ class BookingController extends Controller
                 schema: new OA\Schema(type: 'string')
             ),
             new OA\Parameter(name: 'booking', description: 'ID бронирования', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
-            new OA\JsonContent(ref: '#/components/schemas/AddSlotRequest')
         ],
         responses: [
             new OA\Response(
@@ -154,7 +153,7 @@ class BookingController extends Controller
     {}
 
     #[OA\Delete(
-        path: '/api/v1/bookings/{booking}}',
+        path: '/api/v1/bookings/{booking}',
         summary: 'Удалить весь заказ',
         tags: ['Bookings'],
         parameters: [
@@ -165,7 +164,7 @@ class BookingController extends Controller
                 required: true,
                 schema: new OA\Schema(type: 'string')
             ),
-            new OA\Parameter(name: 'booking', description: 'ID бронирования', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
+            new OA\Parameter(name: 'booking' , description: 'ID бронирования', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
             new OA\Response(

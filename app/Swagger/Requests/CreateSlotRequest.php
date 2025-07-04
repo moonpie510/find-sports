@@ -10,7 +10,6 @@ use OpenApi\Attributes as OA;
 
 #[OA\Schema(
     schema: 'CreateSlotRequest',
-    description: 'Создать бронирование с несколькими слотами',
     properties: [
         new OA\Property(
             property: 'slots',
@@ -28,7 +27,7 @@ use OpenApi\Attributes as OA;
                         type: 'string',
                         format: 'date-time',
                         example: '2027-06-25T13:00:00'
-                    )
+                    ),
                 ],
                 type: 'object'
             )

@@ -21,14 +21,6 @@ class IntervalTest extends TestCase
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Время начала не может быть больше времени конца');
         Interval::create('2030-06-25T12:00:00', '2030-06-22T12:00:00');
-
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Время начала не может быть равно времени конца');
-        Interval::create('2030-06-25T12:00:00', '2030-06-25T12:00:00');
-
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Время начала не может быть меньше текущего времени');
-        Interval::create('2007-06-25T12:00:00', '2007-06-28T12:00:00');
     }
 
     public function test_interval_create_when_start_eq_end(): void
@@ -36,10 +28,6 @@ class IntervalTest extends TestCase
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Время начала не может быть равно времени конца');
         Interval::create('2030-06-25T12:00:00', '2030-06-25T12:00:00');
-
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Время начала не может быть меньше текущего времени');
-        Interval::create('2007-06-25T12:00:00', '2007-06-28T12:00:00');
     }
 
     public function test_interval_create_when_start_less_now(): void

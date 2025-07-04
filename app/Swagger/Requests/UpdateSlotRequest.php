@@ -10,7 +10,6 @@ use OpenApi\Attributes as OA;
 
 #[OA\Schema(
     schema: 'UpdateSlotRequest',
-    description: 'Обновить конкретный слот',
     properties: [
         new OA\Property(
             property: 'start_time',

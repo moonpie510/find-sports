@@ -17,7 +17,7 @@ class User extends Model
      */
     public const string TOKEN = 'User-Token';
 
-    protected $hidden = ['api_token'];
+    protected $hidden = ['api_token', 'created_at', 'updated_at'];
 
     public function bookings(): HasMany
     {
