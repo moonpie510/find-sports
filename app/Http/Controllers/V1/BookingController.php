@@ -26,12 +26,7 @@ class BookingController extends Controller
     public function index(): JsonResponse
     {
         try {
-            $user = $this->userRepository->getByToken(request()->header(User::TOKEN));
-
-            if (!$user) {
-                throw new \Exception('Пользователь не найден по такому токену');
-            }
-
+            $user = $this->userRepository->getByToken(token: request()->header(User::TOKEN), throwException: true);
             $slots = $this->bookingRepository->getSlotsByUser($user);
 
             return ApiResponseHelper::success([
@@ -47,12 +42,7 @@ class BookingController extends Controller
     public function store(CreateSlotRequest $request): JsonResponse
     {
         try {
-            $user = $this->userRepository->getByToken(request()->header(User::TOKEN));
-
-            if (!$user) {
-                throw new \Exception('Пользователь не найден по такому токену');
-            }
-
+            $user = $this->userRepository->getByToken(token: request()->header(User::TOKEN), throwException: true);
             $this->bookingRepository->createSlots($user, IntervalCollection::create($request->slots));
 
             return ApiResponseHelper::success();
@@ -64,24 +54,9 @@ class BookingController extends Controller
     public function update(int $booking, int $slot, UpdateSlotRequest $request): JsonResponse
     {
         try {
-            $user = $this->userRepository->getByToken(request()->header(User::TOKEN));
-
-            if (!$user) {
-                throw new \Exception('Пользователь не найден по такому токену');
-            }
-
-            $booking = $this->bookingRepository->getBookingById($booking, $user->id);
-
-            if (!$booking) {
-                throw new \Exception('Заказ не найден или принадлежит другому пользователю');
-            }
-
-            $slot = $this->bookingRepository->getSlotById($slot, $booking->id);
-
-            if (!$slot) {
-                throw new \Exception('Слот не найден');
-            }
-
+            $user = $this->userRepository->getByToken(token: request()->header(User::TOKEN), throwException: true);
+            $booking = $this->bookingRepository->getBookingById(id: $booking, userId: $user->id, throwException: true);
+            $slot = $this->bookingRepository->getSlotById(slotId: $slot, bookingId: $booking->id, throwException: true);
             $this->bookingRepository->updateSlot($slot, Interval::create($request->start_time, $request->end_time));
 
             return ApiResponseHelper::success(message: 'Слот успешно обновлен');
@@ -93,18 +68,8 @@ class BookingController extends Controller
     public function add(int $booking, AddSlotRequest $request): JsonResponse
     {
         try {
-            $user = $this->userRepository->getByToken(request()->header(User::TOKEN));
-
-            if (!$user) {
-                throw new \Exception('Пользователь не найден по такому токену');
-            }
-
-            $booking = $this->bookingRepository->getBookingById($booking, $user->id);
-
-            if (!$booking) {
-                throw new \Exception('Заказ не найден или принадлежит другому пользователю');
-            }
-
+            $user = $this->userRepository->getByToken(token: request()->header(User::TOKEN), throwException: true);
+            $booking = $this->bookingRepository->getBookingById(id: $booking, userId: $user->id, throwException: true);
             $this->bookingRepository->addSlot($booking, Interval::create($request->start_time, $request->end_time));
 
             return ApiResponseHelper::success(message: 'Слот успешно добавлен');
@@ -116,18 +81,8 @@ class BookingController extends Controller
     public function delete(int $booking): JsonResponse
     {
         try {
-            $user = $this->userRepository->getByToken(request()->header(User::TOKEN));
-
-            if (!$user) {
-                throw new \Exception('Пользователь не найден по такому токену');
-            }
-
-            $booking = $this->bookingRepository->getBookingById($booking, $user->id);
-
-            if (!$booking) {
-                throw new \Exception('Заказ не найден или принадлежит другому пользователю');
-            }
-
+            $user = $this->userRepository->getByToken(token: request()->header(User::TOKEN), throwException: true);
+            $booking = $this->bookingRepository->getBookingById(id: $booking, userId: $user->id, throwException: true);
             $this->bookingRepository->deleteBooking($booking);
 
             return ApiResponseHelper::success(message: 'Заказ успешно удален');

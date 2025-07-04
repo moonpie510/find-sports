@@ -27,8 +27,14 @@ class UserRepository
     /**
      * Получить пользователя по токену.
      */
-    public function getByToken(string $token): ?User
+    public function getByToken(string $token, bool $throwException = false): ?User
     {
-        return $this->getUserQuery(token: $token)->first();
+        $user = $this->getUserQuery(token: $token)->first();
+
+        if ($user === null && $throwException === true) {
+            throw new \Exception('Пользователь не найден по такому токену');
+        }
+
+        return $user;
     }
 }

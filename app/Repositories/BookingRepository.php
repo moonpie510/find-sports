@@ -83,9 +83,15 @@ class BookingRepository
      *
      * Если передан $userId, то проверяется, что пользователю принадлежит заказ.
      */
-    public function getBookingById(int $id, ?int $userId = null): ?Booking
+    public function getBookingById(int $id, ?int $userId = null, bool $throwException = false): ?Booking
     {
-        return $this->getBookingQuery(id: $id, userId: $userId)->first();
+        $booking = $this->getBookingQuery(id: $id, userId: $userId)->first();
+
+        if ($booking === null && $throwException === true) {
+            throw new \Exception('Заказ не найден или принадлежит другому пользователю');
+        }
+
+        return $booking;
     }
 
     /**
@@ -99,9 +105,15 @@ class BookingRepository
     /**
      * Получить слот по id.
      */
-    public function getSlotById(int $slotId, ?int $bookingId = null): ?BookingSlot
+    public function getSlotById(int $slotId, ?int $bookingId = null, bool $throwException = false): ?BookingSlot
     {
-        return $this->getBookingSlotQuery(slotId: $slotId, bookingId: $bookingId)->first();
+        $slot = $this->getBookingSlotQuery(slotId: $slotId, bookingId: $bookingId)->first();
+
+        if ($slot === null && $throwException === true) {
+            throw new \Exception('Слот не найден');
+        }
+
+        return $slot;
     }
 
     /**
