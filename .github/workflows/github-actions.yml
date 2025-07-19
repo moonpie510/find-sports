@@ -1,0 +1,26 @@
+name: CI/CD
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Создаем .env на основе .env.example
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');
+
+      - name: Установка зависимостей composer
+        run: composer install
+
+      - name: Установка зависимостей npm
+        run: npm i
+
+      - name: Делаем build
+        run: npm run build
+
+      - name: Установка прав на папки
+        run: chmod -R 777 storage bootstrap/cache
+
+      - name: Генерация ключа
+        run: php artisan key:generate
