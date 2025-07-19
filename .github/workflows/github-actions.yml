@@ -12,6 +12,9 @@ jobs:
       - name: Создаем .env на основе .env.example
         run: cp .env.example .env
 
+      - name: Создание Docker сети
+        run: docker network create common
+
       - name: Запускаем Docker-контейнеры
         run: docker compose up -d
 
