@@ -15,7 +15,6 @@ services:
 
     php-fpm:
         build: ./docker/php-fpm
-        image: ${DOCKER_NAME}_php-fpm
         container_name: ${DOCKER_NAME}_php-fpm
         restart: unless-stopped
         working_dir: /var/www/${DOCKER_NAME}/site
