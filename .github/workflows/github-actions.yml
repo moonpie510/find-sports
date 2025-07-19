@@ -13,22 +13,22 @@ jobs:
         run: cp .env.example .env
 
       - name: Установка зависимостей composer
-        run: composer install
+        run: docker-compose exec -T php-fpm composer install
 
       - name: Установка зависимостей npm
-        run: npm i
+        run: docker-compose exec -T php-fpm npm i
 
       - name: Генерация ключа
-        run: php artisan key:generate
+        run: docker-compose exec -T php-fpm php artisan key:generate
 
       - name: Установка прав на папки
-        run: chmod -R 777 storage bootstrap/cache
+        run: docker-compose exec -T php-fpm chmod -R 777 storage bootstrap/cache
 
       - name: Делаем build
-        run: npm run build
+        run: docker-compose exec -T php-fpm npm run build
 
       - name: Запуск миграций
-        run: php artisan migrate --force
+        run: docker-compose exec -T php-fpm php artisan migrate --seed
 
       - name: Запуск тестов
-        run: php artisan test
+        run: docker-compose exec -T php-fpm php artisan test
