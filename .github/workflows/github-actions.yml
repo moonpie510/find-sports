@@ -3,7 +3,7 @@ name: CI/CD
 on: [push]
 
 jobs:
-  build:
+  integration:
     runs-on: ubuntu-latest
 
     steps:
@@ -18,11 +18,14 @@ jobs:
       - name: Установка зависимостей npm
         run: npm i
 
-      - name: Делаем build
-        run: npm run build
+      - name: Генерация ключа
+        run: php artisan key:generate
 
       - name: Установка прав на папки
         run: chmod -R 777 storage bootstrap/cache
 
-      - name: Генерация ключа
-        run: php artisan key:generate
+      - name: Делаем build
+        run: npm run build
+
+      - name: Запуск тестов
+        run: php artisan test
