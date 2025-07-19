@@ -42,3 +42,9 @@ php artisan app:create-test-schema
 ```php
 php artisan l5-swagger:generate
 ```
+
+## CI/CD
+При каждом push в ветку:
+- Устанавливаются зависимости composer и npm;
+- Запускается сборка проекта;
+- Прогоняются тесты;

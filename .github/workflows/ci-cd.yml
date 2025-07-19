@@ -1,0 +1,43 @@
+name: CI/CD
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Создаем .env на основе .env.example
+        run: cp .env.example .env
+
+      - name: Создание Docker сети
+        run: docker network create common
+
+      - name: Запускаем Docker-контейнеры
+        run: docker compose up -d
+
+      - name: Установка зависимостей composer
+        run: docker exec sport_php-fpm composer install
+
+      - name: Установка зависимостей npm
+        run: docker exec sport_php-fpm npm i
+
+      - name: Генерация ключа
+        run: docker exec sport_php-fpm php artisan key:generate
+
+      - name: Установка прав на папки
+        run: docker exec sport_php-fpm chmod -R 777 storage bootstrap/cache
+
+      - name: Делаем build
+        run: docker exec sport_php-fpm npm run build
+
+      - name: Запуск миграций
+        run: docker exec sport_php-fpm php artisan migrate --seed
+
+      - name: Создание БД для тестов
+        run: docker exec sport_php-fpm php artisan app:create-test-schema
+
+      - name: Запуск тестов
+        run: docker exec sport_php-fpm php artisan test

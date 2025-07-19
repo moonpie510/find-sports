@@ -6,7 +6,7 @@ ARG ACCEPT_EULA=Y
 # Утановка системных пакетов и настройка системы
 RUN apt-get update \
     && apt-get install -y \
-        gnupg curl ca-certificates unzip libssl1.1 odbcinst unixodbc unixodbc-dev libgss3 libpng-dev locales git  \
+        gnupg curl ca-certificates unzip libssl-dev odbcinst unixodbc unixodbc-dev libgss3 libpng-dev locales git  \
     	apt-transport-https software-properties-common\
     && echo "en_US.UTF-8 UTF-8" > /etc/locale.gen \
     && locale-gen
