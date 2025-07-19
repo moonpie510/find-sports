@@ -8,7 +8,7 @@ jobs:
 
     steps:
       - name: Создаем .env на основе .env.example
-        run: php -r "file_exists('.env') || copy('.env.example', '.env');
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
 
       - name: Установка зависимостей composer
         run: composer install
