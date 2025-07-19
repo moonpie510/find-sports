@@ -19,22 +19,22 @@ jobs:
         run: docker compose up -d
 
       - name: Установка зависимостей composer
-        run: docker exec php-fpm composer install
+        run: docker exec sport_php-fpm composer install
 
       - name: Установка зависимостей npm
-        run: docker exec php-fpm npm i
+        run: docker exec sport_php-fpm npm i
 
       - name: Генерация ключа
-        run: docker exec php-fpm php artisan key:generate
+        run: docker exec sport_php-fpm php artisan key:generate
 
       - name: Установка прав на папки
-        run: docker exec php-fpm chmod -R 777 storage bootstrap/cache
+        run: docker exec sport_php-fpm chmod -R 777 storage bootstrap/cache
 
       - name: Делаем build
-        run: docker exec php-fpm npm run build
+        run: docker exec sport_php-fpm npm run build
 
       - name: Запуск миграций
-        run: docker exec php-fpm php artisan migrate --seed
+        run: docker exec sport_php-fpm php artisan migrate --seed
 
       - name: Запуск тестов
-        run: docker exec php-fpm php artisan test
+        run: docker exec sport_php-fpm php artisan test
