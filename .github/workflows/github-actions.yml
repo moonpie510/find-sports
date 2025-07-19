@@ -12,23 +12,26 @@ jobs:
       - name: Создаем .env на основе .env.example
         run: cp .env.example .env
 
+      - name: Запускаем Docker-контейнеры
+        run: docker compose up -d
+
       - name: Установка зависимостей composer
-        run: docker-compose exec -T php-fpm composer install
+        run: docker exec -T php-fpm composer install
 
       - name: Установка зависимостей npm
-        run: docker-compose exec -T php-fpm npm i
+        run: docker exec -T php-fpm npm i
 
       - name: Генерация ключа
-        run: docker-compose exec -T php-fpm php artisan key:generate
+        run: docker exec -T php-fpm php artisan key:generate
 
       - name: Установка прав на папки
-        run: docker-compose exec -T php-fpm chmod -R 777 storage bootstrap/cache
+        run: docker exec -T php-fpm chmod -R 777 storage bootstrap/cache
 
       - name: Делаем build
-        run: docker-compose exec -T php-fpm npm run build
+        run: docker exec -T php-fpm npm run build
 
       - name: Запуск миграций
-        run: docker-compose exec -T php-fpm php artisan migrate --seed
+        run: docker exec -T php-fpm php artisan migrate --seed
 
       - name: Запуск тестов
-        run: docker-compose exec -T php-fpm php artisan test
+        run: docker exec -T php-fpm php artisan test
