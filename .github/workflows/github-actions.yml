@@ -36,5 +36,8 @@ jobs:
       - name: Запуск миграций
         run: docker exec sport_php-fpm php artisan migrate --seed
 
+      - name: Создание БД для тестов
+        run: docker exec sport_php-fpm php artisan app:create-test-schema
+
       - name: Запуск тестов
         run: docker exec sport_php-fpm php artisan test
